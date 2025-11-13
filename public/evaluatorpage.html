@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MeritUp Main Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/adminpagestyle.css" />
+    
+</head>
+<body>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div id="saveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto"> </strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div class="sidebar" id="sidebar">
+                <div class="avatar">👤</div>
+                <div class="name" id="userName"></div>
+                <div class="role" id="userRole"></div>
+                <hr/>
+
+                <div class="sidebar-content">
+                    <button id="dashboardLink" class="active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button id="evaluationLink" class="teaching-only">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Evaluation</span>
+                    </button>
+                    <button id="non-teaching_evaluationLink" class="non-teaching-only">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Non-Teaching Evaluation</span>
+                    </button>
+                    <button id="peerEvaluationLink" class="non-teaching-only">
+                        <i class="fas fa-users"></i>
+                        <span>Peer Evaluation</span>
+                    </button>
+                    <button id="summaryLink">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Summary Reports</span>
+                    </button>
+                    <button id="rankingLink">
+                        <i class="fas fa-trophy"></i>
+                        <span>Employee Ranking</span>
+                    </button>
+                    <button id="certificateLink">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificate Acceptance</span>
+                    </button>
+                    <button id="employee_managementLink">
+                        <i class="fas fa-users"></i>
+                        <span>Employee Management</span>
+                    </button>
+                </div>
+                <div class="sidebar-footer">
+                    <button id="logoutBtn" class="logout">
+                        <i class="fas fa-sign-out-alt"></i>Log Out
+                    </button>
+                </div>
+                
+            </div>
+
+            <div class="content">
+                <div class="global-header" id="globalHeader">
+                    <div class="container-fluid">
+                        <div class="row align-items-center py-3">
+                            <button class="hamburger" id="hamburgerBtn">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                    <label class="form-label mb-0 me-2 fw-bold">Evaluation Period:</label>
+                                    <select class="form-select form-select-sm" style="width: 300px;" id="globalPeriodSelector">
+                                        <option value="">Loading periods...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner-content">
+
+
+                    <!-- Dashboard Div -->
+                    <div id="dashboard" class="content-section">
+                        <!-- Welcome Card -->
+                        <div class="card mb-4 welcome-card">
+                            <div class="card-body d-flex align-items-center">
+                                <div>
+                                    <h2 class="card-title mb-2" id="welcomeMessage">Welcome back, User!</h2>
+                                    <h6 class="card-text" id="userDepartment">Department Head • Department</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Statistics (NO PROGRESS BARS) -->
+                        <div class="row mb-4">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon bg-primary text-white">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h4 class="mb-0" id="handledEmployees">0</h4>
+                                                <p class="text-muted mb-0">Handled Employees</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon bg-warning text-white">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h4 class="mb-0" id="pendingEvaluations">0</h4>
+                                                <p class="text-muted mb-0">Pending Evaluations</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon bg-success text-white">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h4 class="mb-0" id="completedEvaluations">0</h4>
+                                                <p class="text-muted mb-0">Completed Evaluations</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon bg-info text-white">
+                                                <i class="fas fa-certificate"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h4 class="mb-0" id="pendingCertificates">0</h4>
+                                                <p class="text-muted mb-0">Pending Certificates</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evaluation Progress Tracker + Recent Activity -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="mb-3"><i class="fas fa-tasks me-2"></i>Evaluation Progress</h5>
+                            </div>
+                            
+                            <!-- Progress Tracker -->
+                            <div class="col-md-8 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="fas fa-chart-bar"></i> Current Period: <span id="currentPeriodName">1st Semester 2024-2025</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Overall Progress -->
+                                        <div class="mb-4">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="fw-bold">Overall Progress</span>
+                                                <span class="text-muted" id="overallProgressText">0/0 (0%)</span>
+                                            </div>
+                                            <div class="progress" style="height: 30px;">
+                                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                                                    id="overallProgressBar" 
+                                                    style="width: 0%">
+                                                    <span class="fw-bold">0%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Teaching Evaluations Progress (Teaching Only) -->
+                                        <div class="mb-3 teaching-only">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span><i class="fas fa-chalkboard-teacher text-primary me-2"></i>Teaching Evaluations</span>
+                                                <span class="text-muted" id="teachingProgressText">0/0</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" id="teachingProgressBar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Non-Teaching Evaluations Progress (Non-Teaching Only) -->
+                                        <div class="mb-3 non-teaching-only">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span><i class="fas fa-users-cog text-info me-2"></i>Non-Teaching Evaluations</span>
+                                                <span class="text-muted" id="nonTeachingProgressText">0/0</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" id="nonTeachingProgressBar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Peer Evaluations Progress (Non-Teaching Only) -->
+                                        <div class="mb-3 non-teaching-only">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span><i class="fas fa-user-friends text-warning me-2"></i>Peer Evaluations</span>
+                                                <span class="text-muted" id="peerProgressText">0/0</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" id="peerProgressBar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Certificate Reviews Progress -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span><i class="fas fa-certificate text-success me-2"></i>Certificate Reviews</span>
+                                                <span class="text-muted" id="certificateProgressText">0/0</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" id="certificateProgressBar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Period End Date -->
+                                        <div class="alert alert-light border mt-3 mb-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="text-muted">
+                                                    <i class="fas fa-calendar-alt me-2"></i>Period ends on:
+                                                </span>
+                                                <span class="fw-bold text-primary" id="periodEndDate"> </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Activity Card -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 preview-card">
+                                    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-history me-2"></i>Recent Activity</span>
+                                    </div>
+                                    <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                                        <div class="list-group list-group-flush" id="recentActivityList">
+                                            <div class="list-group-item text-center py-4">
+                                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center bg-light">
+                                        <small class="text-muted">This semester's activity</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Teaching evaluation div -->
+                    <div id="evaluation" class="content-section">
+                        <div class="section-header">
+                            <h4>Employee Evaluation Form</h4>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Faculty Evaluation Inputs</span>
+                                <div class="input-group input-group-sm me-2 d-flex align-items-center" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="evaluationSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Status</th>
+                                                <th>Total Score</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="evaluationTableBody">
+                                             
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Non-Teaching Evaluation Div -->
+                    <div id="non-teaching_evaluation" class="content-section">
+                        <div class="section-header">
+                            <h4>Non-Teaching Evaluation Form</h4>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Non-Teaching Evaluation Inputs</span>
+                                <div class="input-group input-group-sm me-2 d-flex align-items-center" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="nonTeachingEvaluationSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Position</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="nonTeachingEvaluationTableBody">
+                                             
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peer Evaluation Assignments -->
+                    <div id="peerEvaluation" class="content-section">
+                        <div class="section-header">
+                            <h4>Peer Evaluation Assignments</h4>
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#assignPeerModal">
+                                    <i class="fas fa-plus me-1"></i> Assign Peer Evaluation
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Peer Evaluation Assignments</span>
+                                <div class="input-group input-group-sm me-2 d-flex align-items-center" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="peerEvaluationSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Department Head</th>
+                                                <th>Same Department Peer</th>
+                                                <th>External Department Peer</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="peerEvaluationTableBody">
+                                             
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Summary -->
+                    <div id="summary" class="content-section">
+                        <div class="section-header">
+                            <h4>Evaluation Reports</h4>
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <div class="btn-group ms-auto">
+                                    <button class="btn btn-success" id="downloadSummaryMeritBtn">
+                                        <i class="fas fa-check-circle me-1"></i> Generate Summary of Merit Pay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Employee Evaluation Reports</span>
+                                <div class="input-group input-group-sm me-2 d-flex align-items-center" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="summarySearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="summaryTableBody">
+                                            <!-- Content will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                    <!-- Employee Ranking -->
+                    <div id="ranking" class="content-section">
+                        <div class="section-header">
+                            <h4>Employee Rankings</h4>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Ranking History</span>
+                                <div class="input-group input-group-sm" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="rankingSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="rankingTableBody">
+                                            <!-- Content will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Verification -->
+                    <div id="certificate" class="content-section">
+                        <div class="section-header">
+                            <h4>Certificate Verification</h4>
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <div>
+                                    <label class="form-label me-2">Filter by Type:</label>
+                                    <select class="form-select d-inline-block" style="width: auto;" id="certificateTypeFilter">
+                                        <option value="">All Types</option>
+                                        <option value="local">Local</option>
+                                        <option value="regional">Regional</option>
+                                        <option value="national">National</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Pending Certificate Submissions</span>
+                                <div class="input-group input-group-sm" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search Employee..." id="certificateSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Certificate Type</th>
+                                                <th>Event Topic</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="certificateTableBody">
+                                            <!-- Content will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- employee_management -->
+
+                    <div id="employee_management" class="content-section">
+                        <div class="section-header">
+                            <h4>Employee Management</h4>
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                                    <i class="fas fa-plus me-1"></i> Add New Employee
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <span class="text-dark header-span">Employee List</span>
+                                <div class="input-group input-group-sm ms-auto" style="width: 250px;">
+                                    <input type="text" class="form-control" placeholder="Search employee..." id="employeeSearch">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Department</th>
+                                                <th>Employment Type</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="employeeTableBody">
+                                            <!-- Content will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Peer Evaluation Modal -->
+    <div class="modal fade" id="assignPeerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Peer Evaluation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Show current period info -->
+                    <div class="alert alert-info mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Assigning for:</strong> <span id="currentPeriodInfo">-</span>
+                        <br>
+                        <small>Change the evaluation period using the selector at the top of the page</small>
+                    </div>
+                    
+                    <form id="assignPeerForm">
+                        <div class="mb-3">
+                            <label for="employeeToEvaluate" class="form-label"><strong>Employee to Evaluate</strong> <span class="text-danger">*</span></label>
+                            <select class="form-select" id="employeeToEvaluate" required>
+                                <option value="">Select Employee</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departmentHead" class="form-label"><strong>Department Head</strong> <span class="text-danger">*</span></label>
+                            <select class="form-select" id="departmentHead" required>
+                                <option value="">Select Department Head</option>
+                            </select>
+                            <small class="text-muted">Will be filtered based on selected employee's department</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sameDepartmentPeer" class="form-label"><strong>Same Department Peer</strong> <span class="text-danger">*</span></label>
+                            <select class="form-select" id="sameDepartmentPeer" required>
+                                <option value="">Select Same Department Peer</option>
+                            </select>
+                            <small class="text-muted">Peer from the same department</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="externalDepartmentPeer" class="form-label"><strong>External Department Peer</strong> <span class="text-danger">*</span></label>
+                            <select class="form-select" id="externalDepartmentPeer" required>
+                                <option value="">Select External Department Peer</option>
+                            </select>
+                            <small class="text-muted">Peer from a different department</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="savePeerAssignment">
+                        <i class="fas fa-save me-2"></i>Assign Evaluators
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teaching summary View Modal -->
+    <div class="modal fade" id="teachingReportModal" tabindex="-1" aria-labelledby="teachingReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teachingReportModalLabel">Teaching Evaluation Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Employee Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="teaching_employee_name"></span></p>
+                            <p><strong>Department:</strong> <span id="teaching_department"></span></p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><strong>School Year:</strong> <span id="teaching_school_year"></span></p>
+                            <p><strong>Position:</strong> <span id="teaching_position"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Evaluation Breakdown Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 50%;">Criteria</th>
+                                    <th class="text-center">First Semester</th>
+                                    <th class="text-center">Second Semester</th>
+                                    <th class="text-center">Average</th>
+                                    <th class="text-center">Evaluation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- (1) TEACHING COMPETENCE -->
+                                <tr class="table-secondary">
+                                    <td colspan="4"><strong>(1) TEACHING COMPETENCE (20 Maximum Points)</strong></td>
+                                    <td class="text-end" id="teaching_competence_subtotal">_____</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">a. DEAN (maximum 7 points)</td>
+                                    <td class="text-center" id="teaching_dean_fs">_____</td>
+                                    <td class="text-center" id="teaching_dean_ss">_____</td>
+                                    <td class="text-center" id="teaching_dean_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">b. Students (7 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_students_fs">_____</td>
+                                    <td class="text-center" id="teaching_students_ss">_____</td>
+                                    <td class="text-center" id="teaching_students_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">c. Peers (6 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_peers_fs">_____</td>
+                                    <td class="text-center" id="teaching_peers_ss">_____</td>
+                                    <td class="text-center" id="teaching_peers_avg">_____</td>
+                                    <td></td>
+                                </tr>
+
+                                <!-- (2) EFFECTIVENESS OF SCHOOL SERVICE -->
+                                <tr class="table-secondary">
+                                    <td colspan="4"><strong>(2) EFFECTIVENESS OF SCHOOL SERVICE (15 Maximum Points)</strong></td>
+                                    <td class="text-end" id="effectiveness_service_subtotal">_____</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">a. Committee Chairman/Head Teacher (5 maximum points)</td>
+                                    <td class="text-center" id="teaching_committee_fs">_____</td>
+                                    <td class="text-center" id="teaching_committee_ss">_____</td>
+                                    <td class="text-center" id="teaching_committee_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">b. Department Head/Dean Directors, Principals (10 max pts)</td>
+                                    <td class="text-center" id="teaching_dept_head_fs">_____</td>
+                                    <td class="text-center" id="teaching_dept_head_ss">_____</td>
+                                    <td class="text-center" id="teaching_dept_head_avg">_____</td>
+                                    <td></td>
+                                </tr>
+
+                                <!-- (3) PROFESSIONAL GROWTH -->
+                                <tr class="table-secondary">
+                                    <td colspan="4"><strong>(3) PROFESSIONAL GROWTH (15 Maximum Points)</strong></td>
+                                    <td class="text-end" id="professional_growth_subtotal">_____</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">a. Attendance in Seminar Workshop (3 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_seminar_fs">_____</td>
+                                    <td class="text-center" id="teaching_seminar_ss">_____</td>
+                                    <td class="text-center" id="teaching_seminar_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">b. Publications approved by University Council (3 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_publications_fs">_____</td>
+                                    <td class="text-center" id="teaching_publications_ss">_____</td>
+                                    <td class="text-center" id="teaching_publications_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">c. Scholarly achievements (Lecturing, Speaking) (3 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_scholarly_fs">_____</td>
+                                    <td class="text-center" id="teaching_scholarly_ss">_____</td>
+                                    <td class="text-center" id="teaching_scholarly_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">d. Research/Instructional Materials (3 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_research_fs">_____</td>
+                                    <td class="text-center" id="teaching_research_ss">_____</td>
+                                    <td class="text-center" id="teaching_research_avg">_____</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">e. Graduate units earned (.5pt/3 Units) (5 Maximum Points)</td>
+                                    <td class="text-center" id="teaching_graduate_fs">_____</td>
+                                    <td class="text-center" id="teaching_graduate_ss">_____</td>
+                                    <td class="text-center" id="teaching_graduate_avg">_____</td>
+                                    <td></td>
+                                </tr>
+
+                                <!-- (4) TEACHING EXPERIENCE -->
+                                <tr class="table-secondary">
+                                    <td colspan="4"><strong>(4) TEACHING EXPERIENCE (2 points)</strong></td>
+                                    <td class="text-end" id="teaching_experience_subtotal">_____</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">Teaching Experience</td>
+                                    <td class="text-center" id="teaching_experience_fs">_____</td>
+                                    <td class="text-center" id="teaching_experience_ss">_____</td>
+                                    <td class="text-center" id="teaching_experience_avg">_____</td>
+                                    <td></td>
+                                </tr>
+
+                                <!-- TOTAL -->
+                                <tr class="table-primary">
+                                    <td class="text-end" colspan="4"><strong>Total Points</strong></td>
+                                    <td class="text-center"><strong id="teaching_grand_total">_____</strong></td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td class="text-end" colspan="4"><strong>Recommended increase/subject/month</strong></td>
+                                    <td class="text-center"><strong id="recomendation_increase">_____</strong></td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td class="text-end" colspan="4"><strong>Approved increase</strong></td>
+                                    <td class="text-center"><strong id="approved_increase">_____</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Non-Teaching Evaluation View Modal -->
+    <div class="modal fade" id="nonTeachingReportModal" tabindex="-1" aria-labelledby="nonTeachingReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nonTeachingReportModalLabel">Non-Teaching Evaluation Report - School Year 2023-2024</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Employee Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Name of Employee:</strong> <span id="nt_employee_name"></span></p>
+                            <p><strong>Department:</strong> <span id="nt_department"></span></p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><strong>School Year:</strong> <span id="nt_school_year"></span></p>
+                            <p><strong>Position:</strong> <span id="nt_position"></span></p>
+                            <p><strong>Grade Step:</strong> <span id="nt_grade_step"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Evaluation Breakdown Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th rowspan="2">Criteria</th>
+                                    <th colspan="4" class="text-center" id="first_sem">-</th>
+                                    <th colspan="4" class="text-center" id="second_sem">-</th>
+                                    <th rowspan="2" class="text-center">Total Ave.</th>
+                                    <th rowspan="2" class="text-center">Total</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">1</th>
+                                    <th class="text-center">2</th>
+                                    <th class="text-center">3</th>
+                                    <th class="text-center">Ave.</th>
+                                    <th class="text-center">1</th>
+                                    <th class="text-center">2</th>
+                                    <th class="text-center">3</th>
+                                    <th class="text-center">Ave.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- A. PRODUCTIVITY -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>A. Productivity (25 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Quality of Work</td>
+                                    <td class="text-center" id="nt_quality_1_fs">-</td>
+                                    <td class="text-center" id="nt_quality_2_fs">-</td>
+                                    <td class="text-center" id="nt_quality_3_fs">-</td>
+                                    <td class="text-center" id="nt_quality_avg_fs">-</td>
+                                    <td class="text-center" id="nt_quality_1_ss">-</td>
+                                    <td class="text-center" id="nt_quality_2_ss">-</td>
+                                    <td class="text-center" id="nt_quality_3_ss">-</td>
+                                    <td class="text-center" id="nt_quality_avg_ss">-</td>
+                                    <td class="text-center" id="nt_quality_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">2. Quantity of Work</td>
+                                    <td class="text-center" id="nt_quantity_1_fs">-</td>
+                                    <td class="text-center" id="nt_quantity_2_fs">-</td>
+                                    <td class="text-center" id="nt_quantity_3_fs">-</td>
+                                    <td class="text-center" id="nt_quantity_avg_fs">-</td>
+                                    <td class="text-center" id="nt_quantity_1_ss">-</td>
+                                    <td class="text-center" id="nt_quantity_2_ss">-</td>
+                                    <td class="text-center" id="nt_quantity_3_ss">-</td>
+                                    <td class="text-center" id="nt_quantity_avg_ss">-</td>
+                                    <td class="text-center" id="nt_quantity_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">3. Job Knowledge</td>
+                                    <td class="text-center" id="nt_job_knowledge_1_fs">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_2_fs">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_3_fs">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_avg_fs">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_1_ss">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_2_ss">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_3_ss">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_avg_ss">-</td>
+                                    <td class="text-center" id="nt_job_knowledge_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">4. Initiative</td>
+                                    <td class="text-center" id="nt_initiative_1_fs">-</td>
+                                    <td class="text-center" id="nt_initiative_2_fs">-</td>
+                                    <td class="text-center" id="nt_initiative_3_fs">-</td>
+                                    <td class="text-center" id="nt_initiative_avg_fs">-</td>
+                                    <td class="text-center" id="nt_initiative_1_ss">-</td>
+                                    <td class="text-center" id="nt_initiative_2_ss">-</td>
+                                    <td class="text-center" id="nt_initiative_3_ss">-</td>
+                                    <td class="text-center" id="nt_initiative_avg_ss">-</td>
+                                    <td class="text-center" id="nt_initiative_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">5. Reliability</td>
+                                    <td class="text-center" id="nt_reliability_1_fs">-</td>
+                                    <td class="text-center" id="nt_reliability_2_fs">-</td>
+                                    <td class="text-center" id="nt_reliability_3_fs">-</td>
+                                    <td class="text-center" id="nt_reliability_avg_fs">-</td>
+                                    <td class="text-center" id="nt_reliability_1_ss">-</td>
+                                    <td class="text-center" id="nt_reliability_2_ss">-</td>
+                                    <td class="text-center" id="nt_reliability_3_ss">-</td>
+                                    <td class="text-center" id="nt_reliability_avg_ss">-</td>
+                                    <td class="text-center" id="nt_reliability_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_productivity_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- B. ATTITUDE -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>B. Attitude (25 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Job Attitude</td>
+                                    <td class="text-center" id="nt_job_attitude_1_fs">-</td>
+                                    <td class="text-center" id="nt_job_attitude_2_fs">-</td>
+                                    <td class="text-center" id="nt_job_attitude_3_fs">-</td>
+                                    <td class="text-center" id="nt_job_attitude_avg_fs">-</td>
+                                    <td class="text-center" id="nt_job_attitude_1_ss">-</td>
+                                    <td class="text-center" id="nt_job_attitude_2_ss">-</td>
+                                    <td class="text-center" id="nt_job_attitude_3_ss">-</td>
+                                    <td class="text-center" id="nt_job_attitude_avg_ss">-</td>
+                                    <td class="text-center" id="nt_job_attitude_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">2. Work Habits</td>
+                                    <td class="text-center" id="nt_work_habits_1_fs">-</td>
+                                    <td class="text-center" id="nt_work_habits_2_fs">-</td>
+                                    <td class="text-center" id="nt_work_habits_3_fs">-</td>
+                                    <td class="text-center" id="nt_work_habits_avg_fs">-</td>
+                                    <td class="text-center" id="nt_work_habits_1_ss">-</td>
+                                    <td class="text-center" id="nt_work_habits_2_ss">-</td>
+                                    <td class="text-center" id="nt_work_habits_3_ss">-</td>
+                                    <td class="text-center" id="nt_work_habits_avg_ss">-</td>
+                                    <td class="text-center" id="nt_work_habits_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">3. Personal Relation with Others</td>
+                                    <td class="text-center" id="nt_personal_relation_1_fs">-</td>
+                                    <td class="text-center" id="nt_personal_relation_2_fs">-</td>
+                                    <td class="text-center" id="nt_personal_relation_3_fs">-</td>
+                                    <td class="text-center" id="nt_personal_relation_avg_fs">-</td>
+                                    <td class="text-center" id="nt_personal_relation_1_ss">-</td>
+                                    <td class="text-center" id="nt_personal_relation_2_ss">-</td>
+                                    <td class="text-center" id="nt_personal_relation_3_ss">-</td>
+                                    <td class="text-center" id="nt_personal_relation_avg_ss">-</td>
+                                    <td class="text-center" id="nt_personal_relation_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">4. Integrity</td>
+                                    <td class="text-center" id="nt_integrity_1_fs">-</td>
+                                    <td class="text-center" id="nt_integrity_2_fs">-</td>
+                                    <td class="text-center" id="nt_integrity_3_fs">-</td>
+                                    <td class="text-center" id="nt_integrity_avg_fs">-</td>
+                                    <td class="text-center" id="nt_integrity_1_ss">-</td>
+                                    <td class="text-center" id="nt_integrity_2_ss">-</td>
+                                    <td class="text-center" id="nt_integrity_3_ss">-</td>
+                                    <td class="text-center" id="nt_integrity_avg_ss">-</td>
+                                    <td class="text-center" id="nt_integrity_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">5. Self-Discipline</td>
+                                    <td class="text-center" id="nt_self_discipline_1_fs">-</td>
+                                    <td class="text-center" id="nt_self_discipline_2_fs">-</td>
+                                    <td class="text-center" id="nt_self_discipline_3_fs">-</td>
+                                    <td class="text-center" id="nt_self_discipline_avg_fs">-</td>
+                                    <td class="text-center" id="nt_self_discipline_1_ss">-</td>
+                                    <td class="text-center" id="nt_self_discipline_2_ss">-</td>
+                                    <td class="text-center" id="nt_self_discipline_3_ss">-</td>
+                                    <td class="text-center" id="nt_self_discipline_avg_ss">-</td>
+                                    <td class="text-center" id="nt_self_discipline_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_attitude_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- C. PROMOTIONAL COMPETENCE -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>C. Promotional Competence (25 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Ability to Learn</td>
+                                    <td class="text-center" id="nt_ability_learn_1_fs">-</td>
+                                    <td class="text-center" id="nt_ability_learn_2_fs">-</td>
+                                    <td class="text-center" id="nt_ability_learn_3_fs">-</td>
+                                    <td class="text-center" id="nt_ability_learn_avg_fs">-</td>
+                                    <td class="text-center" id="nt_ability_learn_1_ss">-</td>
+                                    <td class="text-center" id="nt_ability_learn_2_ss">-</td>
+                                    <td class="text-center" id="nt_ability_learn_3_ss">-</td>
+                                    <td class="text-center" id="nt_ability_learn_avg_ss">-</td>
+                                    <td class="text-center" id="nt_ability_learn_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">2. Ability to Organize</td>
+                                    <td class="text-center" id="nt_ability_organize_1_fs">-</td>
+                                    <td class="text-center" id="nt_ability_organize_2_fs">-</td>
+                                    <td class="text-center" id="nt_ability_organize_3_fs">-</td>
+                                    <td class="text-center" id="nt_ability_organize_avg_fs">-</td>
+                                    <td class="text-center" id="nt_ability_organize_1_ss">-</td>
+                                    <td class="text-center" id="nt_ability_organize_2_ss">-</td>
+                                    <td class="text-center" id="nt_ability_organize_3_ss">-</td>
+                                    <td class="text-center" id="nt_ability_organize_avg_ss">-</td>
+                                    <td class="text-center" id="nt_ability_organize_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">3. Cooperation</td>
+                                    <td class="text-center" id="nt_cooperation_1_fs">-</td>
+                                    <td class="text-center" id="nt_cooperation_2_fs">-</td>
+                                    <td class="text-center" id="nt_cooperation_3_fs">-</td>
+                                    <td class="text-center" id="nt_cooperation_avg_fs">-</td>
+                                    <td class="text-center" id="nt_cooperation_1_ss">-</td>
+                                    <td class="text-center" id="nt_cooperation_2_ss">-</td>
+                                    <td class="text-center" id="nt_cooperation_3_ss">-</td>
+                                    <td class="text-center" id="nt_cooperation_avg_ss">-</td>
+                                    <td class="text-center" id="nt_cooperation_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">4. Development-Orientation</td>
+                                    <td class="text-center" id="nt_development_1_fs">-</td>
+                                    <td class="text-center" id="nt_development_2_fs">-</td>
+                                    <td class="text-center" id="nt_development_3_fs">-</td>
+                                    <td class="text-center" id="nt_development_avg_fs">-</td>
+                                    <td class="text-center" id="nt_development_1_ss">-</td>
+                                    <td class="text-center" id="nt_development_2_ss">-</td>
+                                    <td class="text-center" id="nt_development_3_ss">-</td>
+                                    <td class="text-center" id="nt_development_avg_ss">-</td>
+                                    <td class="text-center" id="nt_development_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">5. Planning Capability</td>
+                                    <td class="text-center" id="nt_planning_1_fs">-</td>
+                                    <td class="text-center" id="nt_planning_2_fs">-</td>
+                                    <td class="text-center" id="nt_planning_3_fs">-</td>
+                                    <td class="text-center" id="nt_planning_avg_fs">-</td>
+                                    <td class="text-center" id="nt_planning_1_ss">-</td>
+                                    <td class="text-center" id="nt_planning_2_ss">-</td>
+                                    <td class="text-center" id="nt_planning_3_ss">-</td>
+                                    <td class="text-center" id="nt_planning_avg_ss">-</td>
+                                    <td class="text-center" id="nt_planning_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_competence_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- D. ATTENDANCE -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>D. Attendance (15 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Excused Absences without pay (5)</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_absences_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_absences_ss">-</td>
+                                    <td class="text-center" id="nt_absences_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">2. Tardiness (5)</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_tardiness_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_tardiness_ss">-</td>
+                                    <td class="text-center" id="nt_tardiness_total_avg">-</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">3. Minutes Late (5)</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_minutes_late_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_minutes_late_ss">-</td>
+                                    <td class="text-center" id="nt_minutes_late_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_attendance_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- E. PROFESSIONAL ADVANCEMENT -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>E. Professional Advancement (3 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Training/Seminars</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_seminar_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_seminar_ss">-</td>
+                                    <td class="text-center" id="nt_seminar_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_seminar_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- F. Institutional Involvement -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>F. Institutional Involvement (2 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Institutional Involvement</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_institutional_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_institutional_ss">-</td>
+                                    <td class="text-center" id="nt_institutional_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_institutional_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- F. Community Involvement -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>G. Community Involvement (3 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Community Involvement</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_community_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_community_ss">-</td>
+                                    <td class="text-center" id="nt_community_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_community_grand_total">-</strong></td>
+                                </tr>
+                                </tr>
+
+                                <!-- H. Work Experience -->
+                                <tr class="table-secondary">
+                                    <td colspan="11"><strong>H. Work Experience (2 points)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">1. Work Experience</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_work_experience_fs">-</td>
+                                    <td colspan="3"></td>
+                                    <td class="text-center" id="nt_work_experience_ss">-</td>
+                                    <td class="text-center" id="nt_work_experience_total_avg">-</td>
+                                    <td class="text-center text-danger"><strong id="nt_work_experience_grand_total">-</strong></td>
+                                </tr>
+
+                                <!-- GRAND TOTAL -->
+                                <tr class="table-primary">
+                                    <td colspan="10" class="text-end"><strong>Performance Average Rating:</strong></td>
+                                    <td class="text-center text-danger"><strong id="nt_performance_rating">-</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Employee Modal -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm">
+                        <div class="mb-3">
+                            <label for="employeeFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="employeeFirstName" required>
+                            <label for="employeeLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="employeeLastName" required>
+                            <label for="employeeMiddleName" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="employeeMiddleName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeDepartment" class="form-label" >Department</label>
+                            <select class="form-select" id="employeeDepartment" required>
+                                <option value="">Select Department</option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeType" class="form-label">Employment Type</label>
+                            <select class="form-select" id="employeeType" required>
+                                <option value="">Select Type</option>
+                                <option value="full_time">Full-Time</option>
+                                <option value="part_time">Part-Time</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeeEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="employeeEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employeePhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="employeePhone">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveEmployeeBtn">Save Employee</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Employee Modal -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmployeeForm">
+                        <input type="hidden" id="editEmployeeId">
+                        <div class="mb-3">
+                            <label for="editEmployeeName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editEmployeeName" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmployeeDepartment" class="form-label">Department</label>
+                            <select class="form-select" id="editEmployeeDepartment" required>
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmployeeType" class="form-label">Employment Type</label>
+                            <select class="form-select" id="editEmployeeType" required>
+                                <option value="">Select Type</option>
+                                <option value="full_time">Full-Time</option>
+                                <option value="part_time">Part-Time</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="updateEmployeeBtn">Update Employee</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Teaching Evaluation Modal (Per Semester) -->
+    <div class="modal fade" id="teachingEvaluationModal" tabindex="-1" aria-labelledby="teachingEvaluationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teachingEvaluationModalLabel">Teaching Employee Evaluation - Per Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="employee-info mb-4">
+                        <h6 id="modalEmployeeName">Employee Name</h6>
+                        <p class="text-muted" id="modalEmployeeRole">Position • Department</p>
+                    </div>
+
+                    <form id="evaluationForm">
+                        <!-- A. Teaching Competence (20 points) -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Evaluation</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Criteria</th>
+                                                <th class="text-center">Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!--Teaching Competence-->
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>A. Teaching Competence (20 points)</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>a. Dean's Evaluation</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="deanEval" min="0" max="7" step="0.01" placeholder="0.00/7">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>b. Students Evaluation</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="studentEval" min="0" max="7" step="0.01" placeholder="0.00/7">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>c. Peers Evaluation</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="peerEval" min="0" max="6" step="0.01" placeholder="0.00/6">
+                                                </td>
+                                            </tr>
+                                            
+                                            <!--Effectiveness of School Service-->
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>B. Effectiveness of School Service (15 points)</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>a. Committee Chairman/Head Teacher</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="committeeEval" min="0" max="5" step="0.01" placeholder="0.00/5">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>b. Department Head/Dean/Directors/Principals</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="deptHeadEval" min="0" max="10" step="0.01" placeholder="0.00/10">
+                                                </td>
+                                            </tr>
+
+                                            <!--Professional Growth-->
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>C. Professional Growth (15 points)</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>a. Attendance in Seminar/Workshop/Training</td>
+                                                <td class="text-center">
+                                                    <input  id="seminarAttendance" type="number" class="form-control form-control-sm text-center" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>b. Publications approved by University Council</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="publications" min="0" max="3" step="0.01" placeholder="0.00/3">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>c. Scholarly achievements</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="scholarlyAchievement" min="0" max="3" step="0.01" placeholder="0.00/3">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>d. Research/Instructional Materials</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="researchConducted" min="0" max="3" step="0.01" placeholder="0.00/3">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>e. Graduate units earned</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="graduateUnits" min="0" max="5" step="0.01" placeholder="0.00/5">
+                                                </td>
+                                            </tr>
+
+                                            <!--Teaching Experience-->
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>D. Teaching Experience (2 points)</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Teaching Experience</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="teachingExperience" min="0" max="2" step="0.01" placeholder="0.00/2">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Score -->
+                        <div class="alert alert-primary">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Total Score: <strong id="Teaching_totalScore">0.00</strong> / 52</h5>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <small class="text-muted">All scores will be saved for the selected semester</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="saveEvaluation">
+                        <i class="fas fa-save me-1"></i> Save Evaluation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Non-Teaching Evaluation Modal (Per Semester) -->
+    <div class="modal fade" id="NonTeachingEvaluationModal" tabindex="-1" aria-labelledby="NonTeachingEvaluationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="NonTeachingEvaluationModalLabel">Non-Teaching Employee Evaluation - Per Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="employee-info mb-4">
+                        <h6 id="modalNonTeachingEmployeeName">Employee Name</h6>
+                        <p class="text-muted" id="modalEmployeePosition">Position • Department</p>
+                    </div>
+
+                    <form id="nonTeachingEvaluationForm">
+                        <!-- D. Attendance (15 points) -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Evaluation</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Criteria</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>D. Attendance (15 points)</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1. Excused Absences without pay</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="absences" min="0" max="5" step="0.01" placeholder="0.00/5">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2. Tardiness</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="tardiness" min="0" max="5" step="0.01" placeholder="0.00/5">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3. Minutes Late</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="minutes" min="0" max="5" step="0.01" placeholder="0.00/5">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>E. Professional Advancement (3 points)</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1. Training/Seminars/Workshops</td>
+                                                <td class="text-center">
+                                                    <input  id="nonTeachingSeminarPoints" type="number" class="form-control form-control-sm text-center" disabled>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>F. Institutional Involvement</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1. Institutional Involvement</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="institutional" min="0" max="2" step="0.01" placeholder="0.00/2">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>G. Community Involvement</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1. Community Involvement</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="community" min="0" max="3" step="0.01" placeholder="0.00/3">
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="2" class="table-secondary"><strong>H. Work Experience</strong></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1. Work Experience (2 points)</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm text-center" 
+                                                        id="workExperience" min="0" max="2" step="0.01" placeholder="0.00/2">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Score -->
+                        <div class="alert alert-primary">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Total Score: <strong id="NonTeaching_totalScore">0.00</strong> / 25</h5>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <small class="text-muted">All scores will be saved for the selected semester</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="saveNonTeachingEvaluation">
+                        <i class="fas fa-save me-1"></i> Save Evaluation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Teaching Employee History Modal -->
+    <div class="modal fade" id="teachingRankingHistoryModal" tabindex="-1" aria-labelledby="teachingRankingHistoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teachingRankingHistoryModalLabel">Teaching Employee Evaluation History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="rank_employee_name"></span></p>
+                            <p><strong>Nature of Appointment:</strong> <span id="rank_appointment"></span></p>
+                            <p><strong>Teaching Experience:</strong> <span id="rank_teaching_exp"></span></p>
+                            <p><strong>Present Rank:</strong> <span id="rank_present_rank"></span></p>
+                            <p><strong>Present Rate:</strong> <span id="rank_present_rate"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Degree:</strong> <span id="rank_degree"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- 3-Year Point History Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 40%;">Category</th>
+                                    <th class="text-center">OLD POINTS</th>
+                                    <th class="text-center" id="rank_year1_header">____</th>
+                                    <th class="text-center" id="rank_year2_header">____</th>
+                                    <th class="text-center" id="rank_year3_header">____</th>
+                                    <th class="text-center">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. Educational Qualification</strong>  <br> <small>Document Required: Official Transcript of Records</small></td>
+                                    <td class="text-center" id="rank_edu_old">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong id="rank_edu_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Teaching Experience</strong>  <br> <small>Document Required: Certificate of Dean, Director noted by the personnel Officer</small></td>
+                                    <td class="text-center" id="rank_exp_old">____</td>
+                                    <td class="text-center" id="rank_exp_year1">____</td>
+                                    <td class="text-center" id="rank_exp_year2">____</td>
+                                    <td class="text-center" id="rank_exp_year3">____</td>
+                                    <td class="text-center"><strong id="rank_exp_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. Professional Growth (maximum of 13 pts.)</strong></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">a. Ph.D., MBA, MA, MS, Maed (.5/3 units)</td>
+                                    <td class="text-center" id="rank_phd_old">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong id="rank_phd_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">b. Undergraduate (.25/3 units)</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong>____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">c. Seminar (maximum of 3 points)</td>
+                                    <td class="text-center" id="rank_seminar_old">____</td>
+                                    <td class="text-center" id="rank_seminar_year1">____</td>
+                                    <td class="text-center" id="rank_seminar_year2">____</td>
+                                    <td class="text-center" id="rank_seminar_year3">____</td>
+                                    <td class="text-center"><strong id="rank_seminar_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">d. Publications (maximum of 3 points) <br> <small>Document Required: Original Certificate of Appreciation</small></td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong>____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">e. Lecturing/Speaking (maximum of 3 points) <br> <small>Document Required: Original Certificate of Appreciation</small></td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center" id="rank_lecturing_year1">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong id="rank_lecturing_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">f. Research (maximum of 3 points) <br> <small>Document Required: Certification of University Council noted by the VPAA & manuscript</small></td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong>____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Teaching Efficiency (Merit Evaluation)</strong></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">a. Teaching Competence (3)</td>
+                                    <td class="text-center" id="rank_competence_old">____</td>
+                                    <td class="text-center" id="rank_competence_year1">____</td>
+                                    <td class="text-center" id="rank_competence_year2">____</td>
+                                    <td class="text-center" id="rank_competence_year3">____</td>
+                                    <td class="text-center"><strong id="rank_competence_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">b. Effectiveness in School Service (2)</td>
+                                    <td class="text-center" id="rank_service_old">____</td>
+                                    <td class="text-center" id="rank_service_year1">____</td>
+                                    <td class="text-center" id="rank_service_year2">____</td>
+                                    <td class="text-center" id="rank_service_year3">____</td>
+                                    <td class="text-center"><strong id="rank_service_total">____</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>5. Others</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center">____</td>
+                                    <td class="text-center"><strong>____</strong></td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td class="text-end"><strong>TOTAL POINTS</strong></td>
+                                    <td class="text-center"><strong id="rank_old_total">____</strong></td>
+                                    <td class="text-center"><strong id="rank_year1_total">____</strong></td>
+                                    <td class="text-center"><strong id="rank_year2_total">____</strong></td>
+                                    <td class="text-center"><strong id="rank_year3_total">____</strong></td>
+                                    <td class="text-center"><strong id="rank_grand_total">____</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Non-Teaching Ranking History Modal -->
+    <div class="modal fade" id="nonTeachingRankingHistoryModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Non-Teaching Employee Ranking History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="nt_rank_employee_name"></span></p>
+                            <p><strong>Department:</strong> <span id="nt_rank_department"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Position:</strong> <span id="nt_rank_position"></span></p>
+                            <p><strong>Employment Type:</strong> <span id="nt_rank_employment_type"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 30%;">Category</th>
+                                    <th class="text-center" id="nt_rank_year1_header">-</th>
+                                    <th class="text-center" id="nt_rank_year2_header">-</th>
+                                    <th class="text-center" id="nt_rank_year3_header">-</th>
+                                    <th class="text-center">AVERAGE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>A. Productivity (25 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_productivity">-</td>
+                                    <td class="text-center" id="nt_rank_year2_productivity">-</td>
+                                    <td class="text-center" id="nt_rank_year3_productivity">-</td>
+                                    <td class="text-center"><strong id="nt_rank_productivity_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>B. Attitude (25 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_attitude">-</td>
+                                    <td class="text-center" id="nt_rank_year2_attitude">-</td>
+                                    <td class="text-center" id="nt_rank_year3_attitude">-</td>
+                                    <td class="text-center"><strong id="nt_rank_attitude_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>C. Promotional Competence (25 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_competence">-</td>
+                                    <td class="text-center" id="nt_rank_year2_competence">-</td>
+                                    <td class="text-center" id="nt_rank_year3_competence">-</td>
+                                    <td class="text-center"><strong id="nt_rank_competence_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>D. Attendance (15 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_attendance">-</td>
+                                    <td class="text-center" id="nt_rank_year2_attendance">-</td>
+                                    <td class="text-center" id="nt_rank_year3_attendance">-</td>
+                                    <td class="text-center"><strong id="nt_rank_attendance_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>E. Professional Advancement (3 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_advancement">-</td>
+                                    <td class="text-center" id="nt_rank_year2_advancement">-</td>
+                                    <td class="text-center" id="nt_rank_year3_advancement">-</td>
+                                    <td class="text-center"><strong id="nt_rank_advancement_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>F. Institutional Involvement (2 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_institutional">-</td>
+                                    <td class="text-center" id="nt_rank_year2_institutional">-</td>
+                                    <td class="text-center" id="nt_rank_year3_institutional">-</td>
+                                    <td class="text-center"><strong id="nt_rank_institutional_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>G. Community Involvement (3 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_community">-</td>
+                                    <td class="text-center" id="nt_rank_year2_community">-</td>
+                                    <td class="text-center" id="nt_rank_year3_community">-</td>
+                                    <td class="text-center"><strong id="nt_rank_community_avg">-</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>H. Work Experience (2 points)</strong></td>
+                                    <td class="text-center" id="nt_rank_year1_experience">-</td>
+                                    <td class="text-center" id="nt_rank_year2_experience">-</td>
+                                    <td class="text-center" id="nt_rank_year3_experience">-</td>
+                                    <td class="text-center"><strong id="nt_rank_experience_avg">-</strong></td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td class="text-end"><strong>TOTAL POINTS</strong></td>
+                                    <td class="text-center"><strong id="nt_rank_year1_total">-</strong></td>
+                                    <td class="text-center"><strong id="nt_rank_year2_total">-</strong></td>
+                                    <td class="text-center"><strong id="nt_rank_year3_total">-</strong></td>
+                                    <td class="text-center"><strong id="nt_rank_avg_total">-</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Certificate View Modal -->
+    <div class="modal fade" id="certificateViewModal" tabindex="-1" aria-labelledby="certificateViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="certificateViewModalLabel">Certificate Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Certificate Image Placeholder -->
+                            <div class="certificate-preview">
+                                <div class="certificate-placeholder">
+                                    <i class="fas fa-certificate fa-5x text-primary mb-3"></i>
+                                    <p class="text-muted">Certificate Image</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="certificate-details">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Employee Name:</label>
+                                    <p id="certEmployeeName">Employee Name</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Certificate Type:</label>
+                                    <p id="certType">-</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Event Topic:</label>
+                                    <p id="certEventName">-</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Date:</label>
+                                    <p id="certDate">-</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Duration:</label>
+                                    <p id="certDuration">-</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Organizer:</label>
+                                    <p id="certOrganizer">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success accept-certificate">
+                        <i class="fas fa-check me-1"></i> Accept
+                    </button>
+                    <button type="button" class="btn btn-danger reject-certificate">
+                        <i class="fas fa-times me-1"></i> Reject
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/adminpage.js"></script>
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+</body>
+</html>
