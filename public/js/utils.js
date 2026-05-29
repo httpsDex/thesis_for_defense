@@ -26,7 +26,7 @@ async function initGlobalPeriodSelector(onPeriodChange) {
         // Fetch all evaluation periods from API
         //http://localhost:1804
         //https://meritup-server.onrender.com
-        const response = await fetch(`http://localhost:1804/api/evaluation-periods`, {
+        const response = await fetch(`https://meritup-server.onrender.com/api/evaluation-periods`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
