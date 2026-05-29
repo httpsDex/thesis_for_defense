@@ -1,6 +1,6 @@
 // ====================== CLIENT PAGE JAVASCRIPT ======================
-const apiBaseUrl = `http://localhost:1804`;
-// const apiBaseUrl = "https://meritup-server.onrender.com";
+// const apiBaseUrl = `http://localhost:1804`;
+const apiBaseUrl = "https://meritup-server.onrender.com";
 
 // ====================== INITIALIZATION & AUTHENTICATION ======================
 
