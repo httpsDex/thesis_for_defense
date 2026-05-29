@@ -1,6 +1,6 @@
 // ====================== SUPERADMIN PAGE JAVASCRIPT ======================
-const apiBaseUrl = "http://localhost:1804";
-// const apiBaseUrl = "https://meritup-server.onrender.com";
+// const apiBaseUrl = "http://localhost:1804";
+const apiBaseUrl = "https://meritup-server.onrender.com";
 
 // Main js for superadmin page
 document.addEventListener("DOMContentLoaded", () => {
